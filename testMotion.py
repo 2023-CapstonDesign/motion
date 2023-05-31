@@ -9,7 +9,8 @@ docName = sys.argv[1]
 target_action = sys.argv[2]
 
 
-workTime = 12
+# for test
+workTime = 100
 
 # docName = "testDoc3"
 # target_action = "nonee"
@@ -17,12 +18,14 @@ workTime = 12
 
 #setMotion.py와 유사
 actions = ['first', 'second', 'third']
-seq_length = 150
+seq_length = 90
 
 
-action_window_size = 50  # 액션 판단을 위한 윈도우 크기
-action_threshold = 40  # 윈도우 내에서 동일한 액션의 비중이 일정 이상이면 액션 확정
+action_window_size = 30  # 액션 판단을 위한 윈도우 크기
+action_threshold = 25  # 윈도우 내에서 동일한 액션의 비중이 일정 이상이면 액션 확정
 
+# value setting
+judgment_confidence = 0.97
 
 
 model = load_model(f'models/model_{docName}.h5')
@@ -31,7 +34,7 @@ model = load_model(f'models/model_{docName}.h5')
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 hands = mp_hands.Hands(
-    max_num_hands=2,
+    max_num_hands=1,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5)
 
@@ -102,8 +105,7 @@ while cap.isOpened():
 
 
 
-            # value setting
-            judgment_confidence = 0.97
+
 
 
             # 확실하지 않다고 판단, continue
@@ -135,12 +137,12 @@ while cap.isOpened():
                 break
             
                 
-            # for test
-            # cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+            
+            cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 
 
-    # imshow
-    # cv2.imshow('img', img)
+
+    cv2.imshow('img', img)
     
     if this_action == target_action:
         print("true", this_action)
@@ -151,5 +153,5 @@ while cap.isOpened():
         print("false")
         break
 
-#     if cv2.waitKey(1) == ord('q'):
-#         break
+    if cv2.waitKey(1) == ord('q'):
+        break

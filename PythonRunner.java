@@ -14,8 +14,8 @@ public class PythonRunner {
     public static void main(String[] args) throws IOException, InterruptedException {
         // parameters : document name, action
         // action을 first, second, third 이렇게 총 3번 파이썬 파일 열어야 함!
-        String docName = "testDoc4";
-        String action = "first";
+        String docName = "test902";
+        String action = "second";
 
         // activate anaconda virtual environment, execute python file
         ProcessBuilder pb = new ProcessBuilder();

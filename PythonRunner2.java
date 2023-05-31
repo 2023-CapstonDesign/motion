@@ -7,12 +7,21 @@ public class PythonRunner2 {
     public static void main(String[] args) throws IOException, InterruptedException {
         // parameters : document name
         // 학습에서 손동작 데이터를 정해진 위치에 저장하고 학습에도 그 경로 이용해서 문서 이름만 파라미터로 전달하면 됨!
-        String docName = "testDoc";
+        String docName = "test90";
 
         // activate anaconda virtual environment, execute python file
         ProcessBuilder pb = new ProcessBuilder();
         pb.command("/Users/seungtoc/anaconda3/bin/conda", "run", "-n", "motion", "python", "trainMotion.py", docName);
         Process process = pb.start();
+
+
+        // get outputs
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+
 
         //  for confirmation
         int exitCode = process.waitFor();
