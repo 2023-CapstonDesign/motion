@@ -5,14 +5,14 @@ from tensorflow.keras.models import load_model
 import sys
 
 # parameter (docName, action)
-# docName = sys.argv[1]
-# target_action = sys.argv[2]
+docName = sys.argv[1]
+target_action = sys.argv[2]
 
 
-workTime = 100
+workTime = 12
 
-docName = "testDoc3"
-target_action = "nonee"
+# docName = "testDoc3"
+# target_action = "nonee"
 
 
 #setMotion.py와 유사
@@ -135,12 +135,12 @@ while cap.isOpened():
                 break
             
                 
-            
-            cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+            # for test
+            # cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 
 
-
-    cv2.imshow('img', img)
+    # imshow
+    # cv2.imshow('img', img)
     
     if this_action == target_action:
         print("true", this_action)
@@ -151,5 +151,5 @@ while cap.isOpened():
         print("false")
         break
 
-    if cv2.waitKey(1) == ord('q'):
-        break
+#     if cv2.waitKey(1) == ord('q'):
+#         break
