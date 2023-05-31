@@ -10,7 +10,7 @@ target_action = sys.argv[2]
 
 
 # for test
-workTime = 100
+workTime = 30
 
 # docName = "testDoc3"
 # target_action = "nonee"
@@ -25,7 +25,7 @@ action_window_size = 30  # 액션 판단을 위한 윈도우 크기
 action_threshold = 25  # 윈도우 내에서 동일한 액션의 비중이 일정 이상이면 액션 확정
 
 # value setting
-judgment_confidence = 0.97
+judgment_confidence = 0.95
 
 
 model = load_model(f'models/model_{docName}.h5')
@@ -47,7 +47,7 @@ cap = cv2.VideoCapture(0)
 # out2 = cv2.VideoWriter('output.mp4', fourcc, cap.get(cv2.CAP_PROP_FPS), (w, h))
 
 seq = []
-action_seq = []
+predict_action = []
 start_time = cv2.getTickCount()
 
 while cap.isOpened():
@@ -113,16 +113,16 @@ while cap.isOpened():
                 continue
 
 
-            # judgment_confidence 이상 -> action_seq 에 저장
+            # judgment_confidence 이상 -> predict_action 에 저장
             action = actions[i_pred]
-            action_seq.append(action)
+            predict_action.append(action)
 
 
 
-            if len(action_seq) < action_window_size:
+            if len(predict_action) < action_window_size:
                 continue
 
-            window_actions = action_seq[-action_window_size:]
+            window_actions = predict_action[-action_window_size:]
             action_counts = {a: window_actions.count(a) for a in actions}
             max_count = max(action_counts.values())
             dominant_action = max(action_counts, key=action_counts.get)
@@ -138,11 +138,11 @@ while cap.isOpened():
             
                 
             
-            cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+            # cv2.putText(img, f'{this_action.upper()}', org=(int(res.landmark[0].x * img.shape[1]), int(res.landmark[0].y * img.shape[0] + 20)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 
 
 
-    cv2.imshow('img', img)
+    cv2.imshow('motion recognition', img)
     
     if this_action == target_action:
         print("true", this_action)
